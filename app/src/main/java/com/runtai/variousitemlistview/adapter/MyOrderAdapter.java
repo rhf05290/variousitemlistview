@@ -3,6 +3,7 @@ package com.runtai.variousitemlistview.adapter;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -32,7 +33,7 @@ public class MyOrderAdapter extends BaseAdapter {
 
 
     public MyOrderAdapter(Context context, List<ShoppingCarBean> mData, int size) {
-        
+
         this.context = context;
         this.size = size;
         mInflater = LayoutInflater.from(context);
@@ -90,7 +91,7 @@ public class MyOrderAdapter extends BaseAdapter {
             holder.rl_other_title = (RelativeLayout) convertView.findViewById(R.id.rl_other_title);
             holder.mListView = (HorizontalListView) convertView.findViewById(R.id.mListView);
             holder.tv_retract = (TextView) convertView.findViewById(R.id.tv_retract);
-                    convertView.setTag(holder);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -98,11 +99,11 @@ public class MyOrderAdapter extends BaseAdapter {
         holder.item_goodsName.setText(mData.get(position).getGoodsName());
         String flag = mData.get(0).getFlag();
 
-       
+
         if (position == size) {
             holder.ll_watch_present_title.setVisibility(View.VISIBLE);
             holder.mListView.setAdapter(new MyPresentAdapter(context, presentData));
-        }else {
+        } else {
             holder.ll_watch_present_title.setVisibility(View.GONE);
         }
 
@@ -111,19 +112,36 @@ public class MyOrderAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (isClick) {
                     isClick = false;
-                }else {
+                } else {
                     isClick = true;
                 }
-                
+
             }
         });
 
         if (isClick) {
             holder.tv_retract.setText("收起");
-        }else  {
+        } else {
             holder.tv_retract.setText("查看赠品");
         }
-        
+
+        holder.mListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                
+                switch (event.getAction()) {
+                    
+                    case MotionEvent.ACTION_DOWN:
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+                return false;
+            }
+        });
+
 //        else {
 //            holder.ll_watch_present_title.setVisibility(View.GONE); 
 //        }
@@ -157,7 +175,7 @@ public class MyOrderAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView item_goodsName,tv_retract;
+        TextView item_goodsName, tv_retract;
         RelativeLayout rl_full_cut_title, rl_full_present_title, rl_other_title;
         LinearLayout ll_watch_present_title;
         HorizontalListView mListView;
