@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="black_text">#333333</color>
+    <color name="text_green">#4691E5</color>
+    <color name="white">#ffffff</color>
+    <color name="new_title_color">#FF2D48</color>
+    <color name="mdj_text_gray">#ffacacac</color>
+    <color name="gray_text">#555555</color>
+    <!--分割线的颜色-->
+    <color name="line_backgroud_color">#dedfe0</color>
+</resources>
