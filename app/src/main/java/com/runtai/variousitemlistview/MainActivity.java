@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnScrollChangeListener;
 import android.widget.AbsListView;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyOrderAdapter.OnDataChangeListener {
 
     private ListView lv_full_present;
     List<ShoppingCarBean> mDatas;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mReyclerView;
     private String flag;
     private int size;
+    private float dx;
+    private float dy;
+    private MyOrderAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +176,8 @@ public class MainActivity extends AppCompatActivity {
 //        myListView.setAdapter(new MyPresentAdapter(this,presentData));
 
 
-        MyOrderAdapter adapter = new MyOrderAdapter(this, mDatas, size);
+        adapter = new MyOrderAdapter(this, mDatas, size);
+        adapter.setOnPresentDataChangeListener(this);
         lv_full_present.setAdapter(adapter);
 
     }
@@ -213,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         lv_full_present.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "点击了" + position + "标记：" + mDatas.get(position).getFlag(), 
+                Toast.makeText(MainActivity.this, "点击了" + position + "标记：" + mDatas.get(position).getFlag(),
                         Toast.LENGTH_SHORT).show();
             }
         });
@@ -223,5 +228,42 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout header1 = (LinearLayout) inflator.inflate(resId, null);
         lv_full_present.addHeaderView(header1);
+    }
+
+    private float downX;    //按下时 的X坐标
+    private float downY;    //按下时 的Y坐标
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //在触发时回去到起始坐标
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                //将按下时的坐标存储
+                downX = x;
+                downY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+                //获取到距离差
+                dx = x - downX;
+                dy = y - downY;
+
+                break;
+        }
+
+        if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+            if (Math.abs(dx) > Math.abs(dy)) {
+                //水平方向移动
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    @Override
+    public void refreshAdapter() {
+        adapter.notifyDataSetChanged();
     }
 }

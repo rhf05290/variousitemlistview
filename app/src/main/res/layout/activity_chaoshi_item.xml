@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
 
-    <include layout="@layout/shoppingcar_sort_title"/>
+    
     
     <RelativeLayout
         android:id="@+id/rl_shoppingcar_item"
@@ -186,4 +186,6 @@
         android:orientation="horizontal"
         android:visibility="gone" />
     </RelativeLayout>
+
+    <include layout="@layout/shoppingcar_sort_title"/>
 </LinearLayout>

@@ -29,8 +29,7 @@ public class MyOrderAdapter extends BaseAdapter {
     private List<ShoppingCarBean> mData;
     private final LayoutInflater mInflater;
     private List<ShoppingCarBean> presentData;
-    private boolean isClick;
-
+    private boolean isClick = false;
 
     public MyOrderAdapter(Context context, List<ShoppingCarBean> mData, int size) {
 
@@ -97,80 +96,34 @@ public class MyOrderAdapter extends BaseAdapter {
         }
 
         holder.item_goodsName.setText(mData.get(position).getGoodsName());
-        String flag = mData.get(0).getFlag();
 
-
-        if (position == size) {
+        if (position == size - 1) {
             holder.ll_watch_present_title.setVisibility(View.VISIBLE);
             holder.mListView.setAdapter(new MyPresentAdapter(context, presentData));
+
+            holder.tv_retract.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (!isClick) {
+                        isClick = true;
+                    } else {
+                        isClick = false;
+                    }
+
+                }
+            });
+
+            if (isClick) {
+                holder.tv_retract.setText("收起");
+            } else {
+                holder.tv_retract.setText("查看赠品");
+            }
         } else {
             holder.ll_watch_present_title.setVisibility(View.GONE);
         }
 
-        holder.tv_retract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isClick) {
-                    isClick = false;
-                } else {
-                    isClick = true;
-                }
 
-            }
-        });
-
-        if (isClick) {
-            holder.tv_retract.setText("收起");
-        } else {
-            holder.tv_retract.setText("查看赠品");
-        }
-
-        holder.mListView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                
-                switch (event.getAction()) {
-                    
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        break;
-                }
-                return false;
-            }
-        });
-
-//        else {
-//            holder.ll_watch_present_title.setVisibility(View.GONE); 
-//        }
-
-
-//        if ("满减".equals(flag)) {
-//            holder.rl_full_cut_title.setVisibility(View.VISIBLE);
-//            holder.ll_watch_present_title.setVisibility(View.GONE);
-////            holder.rl_full_present_title.setVisibility(View.GONE);
-//            holder.rl_other_title.setVisibility(View.GONE);
-//        } else if ("满赠".equals(flag)) {
-//            holder.rl_full_cut_title.setVisibility(View.GONE);
-//            holder.ll_watch_present_title.setVisibility(View.GONE);
-////            holder.rl_full_present_title.setVisibility(View.VISIBLE);
-//            holder.rl_other_title.setVisibility(View.GONE);
-//        } else if ("其它".equals(flag)) {
-//            holder.rl_full_cut_title.setVisibility(View.GONE);
-//            holder.ll_watch_present_title.setVisibility(View.GONE);
-////            holder.rl_full_present_title.setVisibility(View.GONE);
-//            holder.rl_other_title.setVisibility(View.VISIBLE);
-//
-//        } 
-
-//        else if ("赠品".equals(flag)) {
-//            holder.rl_full_cut_title.setVisibility(View.GONE);
-//            holder.ll_watch_present_title.setVisibility(View.VISIBLE);
-//            holder.rl_full_present_title.setVisibility(View.GONE);
-//            holder.rl_other_title.setVisibility(View.GONE);
-//        }
         return convertView;
     }
 
@@ -180,4 +133,17 @@ public class MyOrderAdapter extends BaseAdapter {
         LinearLayout ll_watch_present_title;
         HorizontalListView mListView;
     }
+
+    public OnDataChangeListener dataChangeListener;
+
+    public void setOnPresentDataChangeListener(OnDataChangeListener dataChangeListener) {
+
+        this.dataChangeListener = dataChangeListener;
+    }
+
+    public interface OnDataChangeListener {
+
+        void refreshAdapter();
+    }
+
 }

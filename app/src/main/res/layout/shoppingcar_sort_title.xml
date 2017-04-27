@@ -12,6 +12,11 @@
         android:orientation="vertical"
         android:visibility="gone">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line_backgroud_color" />
+
         <RelativeLayout
             android:id="@+id/rl_watch_present"
             android:layout_width="match_parent"
@@ -43,11 +48,7 @@
             android:id="@+id/mListView"
             android:layout_width="match_parent"
             android:layout_height="110dp" />
-        
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/line_backgroud_color"/>
+
 
     </LinearLayout>
 
